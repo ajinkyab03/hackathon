@@ -19,14 +19,11 @@ const BookingForm = ({ museum, isOpen, setIsOpen }) => {
 
     const navigate = useNavigate();
     const handleSubmit = (e) => {
-        e.preventDefault();
-        // Handle form submission logic
-        console.log(formData);
-        setIsOpen(false);
         navigate("/payment", {
             state: {
                 totalCost: 5000,
-                title: museum.title,
+                title: museum.name,
+                ticketData: formData,
             },
         });
     };

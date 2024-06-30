@@ -1,7 +1,9 @@
 import React, { useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const PaymentPage = () => {
+    const [loading, setLoading] = useState(false);
+
     const location = useLocation();
 
     if (!location.state) return null;
@@ -13,16 +15,34 @@ const PaymentPage = () => {
         cvv: "",
     });
 
+    const navigate = useNavigate();
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setPaymentData({ ...paymentData, [name]: value });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // Handle payment submission logic
-        console.log(paymentData);
-        alert("Payment submitted successfully!");
+        setLoading(true);
+        const res = await fetch("http://localhost:5000/api/tickets", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                ...location.state.ticketData,
+            }),
+        });
+        const data = await res.json();
+        if (res.ok) {
+            alert("Payment successful. Ticket booked !");
+            navigate("/");
+        } else {
+            alert("Payment failed. Please try again.");
+            console.log(data);
+        }
+        setLoading(false);
     };
 
     return (
@@ -91,9 +111,11 @@ const PaymentPage = () => {
                     <div className="text-right">
                         <button
                             type="submit"
-                            className="bg-blue-600 text-white py-2 px-4 rounded"
+                            className={`bg-blue-600 text-white py-2 px-4 rounded ${
+                                loading ? "opacity-50 cursor-not-allowed" : ""
+                            }`}
                         >
-                            Submit Payment
+                            {loading ? "Processing..." : "Pay Now"}
                         </button>
                     </div>
                 </form>
