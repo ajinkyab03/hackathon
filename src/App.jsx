@@ -1,54 +1,19 @@
-import React, { useState } from 'react';
-import './App.css';
-import Header from './Header';
-import Home from './Home';
-import About from './About';
-import ContactUs from './ContactUs';
-import Museums from './Museums';
-import BookingForm from './BookingForm';
-import MuseumInfoBox from './MuseumInfoBox'; // Component for displaying museum info
+import React from "react";
+import Navbar from "./components/Navabar";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Home from "./pages/Home";
+import PaymentPage from "./pages/PaymentPage";
 
-function App() {
-  const [showContactForm, setShowContactForm] = useState(false);
-  const [selectedMuseum, setSelectedMuseum] = useState(null);
-  const [showBookingForm, setShowBookingForm] = useState(false);
-  const [showInfoBox, setShowInfoBox] = useState(false);
-
-  const handleMuseumInfoClick = (museum) => {
-    setSelectedMuseum(museum);
-    setShowInfoBox(true);
-    setShowBookingForm(false);
-  };
-
-  const handleMuseumBookClick = (museum) => {
-    setSelectedMuseum(museum);
-    setShowBookingForm(true);
-    setShowInfoBox(false);
-  };
-
-  return (
-    <div className="App">
-      <Header />
-      <main>
-        <Home />
-        <Museums onMuseumInfoClick={handleMuseumInfoClick} onMuseumBookClick={handleMuseumBookClick} />
-        {selectedMuseum && showInfoBox && (
-          <MuseumInfoBox
-            museum={selectedMuseum}
-            onClose={() => setShowInfoBox(false)}
-          />
-        )}
-        {selectedMuseum && showBookingForm && (
-          <BookingForm
-            museum={selectedMuseum}
-            setShowBookingForm={setShowBookingForm}
-          />
-        )}
-        <About />
-        {showContactForm && <ContactUs setShowContactForm={setShowContactForm} />}
-      </main>
-    </div>
-  );
-}
+const App = () => {
+    return (
+        <div className="bg-gray-900 min-h-screen w-full font-main">
+            <Navbar />
+            <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/payment" element={<PaymentPage />} />
+            </Routes>
+        </div>
+    );
+};
 
 export default App;
