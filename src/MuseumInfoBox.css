@@ -1,0 +1,17 @@
+/* MuseumInfoBox.css */
+
+.museum-info-box {
+    border: 1px solid #ccc;
+    padding: 20px;
+    margin-top: 20px;
+    background-color: #f9f9f9;
+  }
+  
+  .museum-info-box h2 {
+    margin-top: 0;
+  }
+  
+  .museum-info-box button {
+    margin-top: 10px;
+  }
+  
